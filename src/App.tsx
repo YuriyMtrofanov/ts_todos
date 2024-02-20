@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "materialize-css/dist/css/materialize.css";
 import 'material-icons/iconfont/material-icons.css';
 import NavBar from "./components/NavBar";
@@ -8,6 +8,15 @@ import { NewTodoType } from "./components/interfaces";
 
 const App: React.FunctionComponent = () => {
   const [todos, setTodos] = useState<NewTodoType[]>([]); // или моюжно использовать <Array<NewTodoType>>
+
+  useEffect(() => {
+    const state = JSON.parse(localStorage.getItem("todos") || "[]") as NewTodoType[];
+    setTodos(state);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const handleAdd = (data: string) => {
     const newTodo: NewTodoType = {
