@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const NavBar: React.FunctionComponent = () => {
     return (
@@ -7,8 +8,8 @@ const NavBar: React.FunctionComponent = () => {
                 <div className="container">
                     <a href="/" className="brand-logo">TS Todos</a>
                     <ul className="right hide-on-med-and-down">
-                        <li><a href="/">Tasks</a></li>
-                        <li><a href="/">About</a></li>
+                        <li><NavLink to="/">Tasks</NavLink></li>
+                        <li><NavLink to="/about">About</NavLink></li>
                     </ul>
                 </div>
             </div>
