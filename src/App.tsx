@@ -1,25 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "materialize-css/dist/css/materialize.css";
+import 'material-icons/iconfont/material-icons.css';
+import NavBar from "./components/NavBar";
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import { NewTodoType } from "./components/interfaces";
 
-function App() {
+const App: React.FunctionComponent = () => {
+  const [todos, setTodos] = useState<NewTodoType[]>([]); // или моюжно использовать <Array<NewTodoType>>
+
+  const handleAdd = (data: string) => {
+    const newTodo: NewTodoType = {
+      title: data,
+      id: Date.now(),
+      completed: false
+    };
+    setTodos(prevState => [newTodo, ...prevState]);
+  };
+  
+  const handleToggle = (id: number) => {
+    setTodos(prevState =>
+      prevState.map(todo => {
+        if (todo.id === id) {
+          todo.completed = !todo.completed;
+        }
+        return todo;
+    }));
+  };
+
+  const handleDelete = (id: number): void => {
+    const remove = window.confirm("Are you sure?");
+    remove && setTodos(prevState => prevState.filter(todo => todo.id !== id));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar />
+      <div className="container">
+        <TodoForm
+          onAdd={handleAdd}
+        />
+        <TodoList
+          todos={todos}
+          onToggle={handleToggle}
+          onDelete={handleDelete}
+          />
+      </div>
+    </>
   );
 }
 
